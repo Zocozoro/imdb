@@ -5,7 +5,6 @@ from pathlib import Path
 
 def _get_actor_name_from_user():
     name = input('Please enter the name of the actor/actress you want you know about: ').split(' ')
-    # name = 'Jeff Goldblum'.split(' ')
     return "{}, {}".format(name[1], name[0])
 
 
@@ -18,8 +17,9 @@ def _get_movie_title_and_year(film):
 
 
 def _get_json_object_from_actor(actor, reverse):
+    actor_or_actress = [s for s in actor['filmography'][0] if 'act' in s][0]
     films = [_get_movie_title_and_year(film) for film
-             in actor['filmography'][0].get('actor')
+             in actor['filmography'][0].get(actor_or_actress)
              if film.data.get('kind') == 'movie']
     actual_films = []
     for film in sorted(films, key=lambda film: film['year'], reverse=reverse):
@@ -36,8 +36,8 @@ def _get_json_object_from_actor(actor, reverse):
 
 def _interact_with_actor(actor):
     print('Retrieving movie information for {}'.format(actor['name']))
-
-    filmography = actor['filmography'][0].get('actor')  # [0] index needed?
+    actor_or_actress = [s for s in actor['filmography'][0] if 'act' in s][0]
+    filmography = actor['filmography'][0].get(actor_or_actress)  # [0] index needed?
 
     if filmography is None:
         print("{} has not been in any movies.".format(actor['name']))
@@ -82,6 +82,8 @@ def _interact_with_actor(actor):
             path = Path(file_location / "{}.json".format(actor['name']))
             with open(path, mode='wt') as f:
                 f.write(_get_json_object_from_actor(actor, reverse))
+
+            print('{}.json file successfully saved!'.format(actor['name']))
 
         elif answer[0] == 'quit':
             break
