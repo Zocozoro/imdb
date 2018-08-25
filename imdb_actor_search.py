@@ -1,5 +1,6 @@
 import imdb
 import json
+from pathlib import Path
 
 
 def _get_actor_name_from_user():
@@ -16,11 +17,26 @@ def _get_movie_title_and_year(film):
     return {'title': title, 'year': year}
 
 
-def _get_json_object_from_actor(actor):
-    pass
+def _get_json_object_from_actor(actor, reverse):
+    films = [_get_movie_title_and_year(film) for film
+             in actor['filmography'][0].get('actor')
+             if film.data.get('kind') == 'movie']
+    actual_films = []
+    for film in sorted(films, key=lambda film: film['year'], reverse=reverse):
+        year_value = film.get('year')
+        actual_films.append({'name': film.get('title'),
+                             'year': year_value if year_value != 3000 else 'unreleased'})
+    dict_object = {
+        'actor_name': actor.data['name'],
+        'films': actual_films
+    }
+    json_object = json.dumps(dict_object, indent=4)
+    return json_object
 
 
 def _interact_with_actor(actor):
+    print('Retrieving movie information for {}'.format(actor['name']))
+
     filmography = actor['filmography'][0].get('actor')  # [0] index needed?
 
     if filmography is None:
@@ -53,16 +69,28 @@ def _interact_with_actor(actor):
 
         elif answer[0] == 'json':
             reverse = False
+            file_location = Path().absolute()
 
             if len(answer) > 1:
-                reverse = True if answer[1] == '-r' else False
+                if answer[1] == '-r':
+                    reverse = True if answer[1] == '-r' else False
+                    if len(answer) > 2:
+                        file_location = answer[2]
+                else:
+                    file_location = answer[1]
 
-            json_object = _get_json_object_from_actor(actor)
+            path = Path(file_location / "{}.json".format(actor['name']))
+            with open(path, mode='wt') as f:
+                f.write(_get_json_object_from_actor(actor, reverse))
+
         elif answer[0] == 'quit':
             break
+
         else:
-            print('')
-        input('BLERG')
+            print('Not valid input. Please try again.')
+
+
+        input('PRESS ENTER TO CONTINUE')
 
 
 def _get_int_from_user_input():
@@ -87,7 +115,7 @@ def main():
         actor_results = ia.search_person(actor_name_query)
         # List comes back with many actors with similar names so perform a direct name search on results
         # to see if we get a single exact match.
-        actor = [x for x in actor_results]# if x.data['name'] == actor_name_query]
+        actor = [x for x in actor_results if x.data['name'] == actor_name_query]
 
         if len(actor) == 1:  # We have found exact match.
             actor_info = ia.get_person(actor[0].personID)
