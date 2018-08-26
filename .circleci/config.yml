@@ -20,4 +20,4 @@ jobs:
             . venv/bin/activate
             python pip install setuptools wheel
 
-      - run: echo "A first hello"
+      # - run: echo "A first hello"
