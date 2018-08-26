@@ -44,6 +44,7 @@ jobs:
             . venv/bin/activate
             twine upload dist/*
 
+# Makes it so it only deploys to PyPI when a new version tag is being committed.
 workflows:
     version: 2
     build_and_deploy:
@@ -57,6 +58,6 @@ workflows:
           - build
           filters:
             tags:
-              only: /[0-9]+(\.[0-9]+)*/
+              only: /[0-9]+(\.[0-9]+)*/ # expects the tag to be a version number, eg 3.1.78
             branches:
               ignore: /.*/

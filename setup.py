@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="imdb_cli_tool",
-    version="0.0.6",
+    version="1.0.0",
     author="Zak Cook",
     author_email="1zrcook@gmail.com",
     description="A cli tool to pull movie information about actors/actresses.",
@@ -13,6 +13,9 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Zocozoro/imdb",
     packages=setuptools.find_packages(),
+    install_requires=[
+        'IMDb'
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
