@@ -19,5 +19,9 @@ jobs:
             python -m venv venv
             . venv/bin/activate
             pip install setuptools wheel
+      - run:
+          name: build package
+          command: |
+            python setup.py sdist bdist_wheel
 
       # - run: echo "A first hello"
