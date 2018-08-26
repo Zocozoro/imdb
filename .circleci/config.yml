@@ -6,7 +6,15 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
+    - image: circleci/python:3.6.1
+
+    working_directory: ~/repo
+
+    steps:
+    - checkout
+
+  deploy:
+    docker:
       - image: circleci/python:3.6.1
 
     working_directory: ~/repo
@@ -30,11 +38,25 @@ jobs:
             echo -e "[pypi]" >> ~/.pypirc
             echo -e "username = Zocozoro" >> ~/.pypirc
             echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
-        # cat ~/.pypirc
       - run:
           name: upload to pypi
           command: |
             . venv/bin/activate
             twine upload dist/*
-# nothing
-      # - run: echo "A first hello"
+
+workflows:
+    version: 2
+    build_and_deploy:
+      jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+      - deploy:
+          requires:
+          - build
+          filters:
+            tags:
+              only: /[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
