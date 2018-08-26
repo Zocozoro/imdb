@@ -1,0 +1,7 @@
+.idea/
+venv/
+*.json
+twine
+build/
+dist/
+imdb_cli_tool.egg-info/
