@@ -13,4 +13,11 @@ jobs:
 
     steps:
       - checkout
+      - run:
+          name: install setup packages
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            python pip install setuptools whee
+
       - run: echo "A first hello"
