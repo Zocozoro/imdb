@@ -29,6 +29,6 @@ jobs:
             echo -e "[pypi]" >> ~/.pypirc
             echo -e "username = Zocozoro" >> ~/.pypirc
             echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
-            echo ~/.pypirc
+            cat ~/.pypirc
 
       # - run: echo "A first hello"
