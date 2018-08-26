@@ -1,4 +1,3 @@
-# imdb
 Python program to pull information from IMDb about actors.
 
 GitHub link: (https://github.com/Zocozoro/imdb)
