@@ -14,11 +14,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: install setup packages
+          name: install packages
           command: |
             python -m venv venv
             . venv/bin/activate
-            pip install setuptools wheel
+            pip install setuptools wheel twine
       - run:
           name: build package
           command: |
