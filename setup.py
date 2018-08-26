@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="imdb_cli_tool",
-    version="0.0.4",
+    version="0.0.5",
     author="Zak Cook",
     author_email="1zrcook@gmail.com",
     description="A cli tool to pull movie information about actors/actresses.",
