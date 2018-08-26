@@ -22,6 +22,7 @@ jobs:
       - run:
           name: build package
           command: |
+            . venv/bin/activate
             python setup.py sdist bdist_wheel
       - run:
           name: init .pypirc
@@ -29,6 +30,11 @@ jobs:
             echo -e "[pypi]" >> ~/.pypirc
             echo -e "username = Zocozoro" >> ~/.pypirc
             echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
-            cat ~/.pypirc
+        # cat ~/.pypirc
+      - run:
+          name: upload to pypi
+          command: |
+            . venv/bin/activate
+            twine upload dist/*
 # nothing
       # - run: echo "A first hello"
