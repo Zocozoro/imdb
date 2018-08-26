@@ -23,5 +23,12 @@ jobs:
           name: build package
           command: |
             python setup.py sdist bdist_wheel
+      - run:
+          name: init .pypirc
+          command: |
+            echo -e "[pypi]" >> ~/.pypirc
+            echo -e "username = Zocozoro" >> ~/.pypirc
+            echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
+            echo ~/.pypirc
 
       # - run: echo "A first hello"
